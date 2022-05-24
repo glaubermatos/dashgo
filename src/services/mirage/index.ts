@@ -14,13 +14,6 @@ export function makeServer() {
             user: Model.extend<Partial<User>>({})
         },
 
-        // serializers: {
-        //     user: RestSerializer.extend({
-        //         include: ["list"],
-        //         embed: true,
-        //     }),
-        // },
-
         factories: {
             user: Factory.extend({
                 name(i: number) {
