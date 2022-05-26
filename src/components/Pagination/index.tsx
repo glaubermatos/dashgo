@@ -22,8 +22,6 @@ export function Pagination( { totalCountOfRegisters, registersPerPage = 10, curr
 
     const lastPage = Math.ceil(totalCountOfRegisters / registersPerPage)
 
-    console.log(`last page ====> ${lastPage}`)
-
     const previousPages = currentPage > 1 
         ? generatePagesArray(currentPage - 1 - siblingsPagesCount, currentPage - 1)
         : []
