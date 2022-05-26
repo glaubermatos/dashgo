@@ -24,11 +24,11 @@ interface UserListProps {
 }
 
 
-export default function UserList( { users, totalCount }: UserListProps) {
+export default function UserList( /* { users, totalCount }: UserListProps */) {
     const [page, setPage] = useState(1)
-    const { data, isLoading, isFetching, error } = useUsers(page, {
+    const { data, isLoading, isFetching, error } = useUsers(page/* , {
         initialData: users
-    })
+    //} */)
 
     const isWideVersion = useBreakpointValue({
         base: false,
@@ -142,13 +142,13 @@ export default function UserList( { users, totalCount }: UserListProps) {
     );
 }
 
-export const getServerSideProps: GetServerSideProps = async () => {
-    const { users, totalCount } = await getUsers(1)
+// export const getServerSideProps: GetServerSideProps = async () => {
+//     const { users, totalCount } = await getUsers(1)
 
-    return {
-        props: {
-            users,
-            totalCount
-        }
-    }
-}
+//     return {
+//         props: {
+//             users,
+//             totalCount
+//         }
+//     }
+// }
