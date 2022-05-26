@@ -3,6 +3,7 @@ import Link from "next/link";
 import { SubmitHandler , useForm } from 'react-hook-form'
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from 'yup'
+import { useMutation } from "react-query";
 
 import { useToast } from '@chakra-ui/react'
 
@@ -10,6 +11,8 @@ import { Input } from "../../components/Form/Input";
 import { Header } from "../../components/Header";
 import { Sidebar } from "../../components/Sidebar";
 import { useRouter } from "next/router";
+import { api } from "../../services/api";
+import { queryClient } from "../../services/queryClient";
 
 interface CreateUserFormData {
     name: string,
@@ -27,6 +30,21 @@ const schema = yup.object({
 
 
 export default function CreateUser() {
+    const createUser = useMutation(async (user: CreateUserFormData) => {
+        const response = await api.post('users', {
+            user: {
+                ...user,
+                 created_at: new Date()
+            }
+        })
+
+        return response.data.user
+    }, {
+        onSuccess: () => {
+            queryClient.invalidateQueries('users')
+        }
+    })
+    
     const router = useRouter()
     const toast = useToast()
 
@@ -34,9 +52,9 @@ export default function CreateUser() {
         resolver: yupResolver(schema)
     })
 
-    const handleCreateUser: SubmitHandler<CreateUserFormData> = async (value) => {
-        await new Promise((resolve) => setTimeout(resolve, 2000))
-        console.log(value)
+    const handleCreateUser: SubmitHandler<CreateUserFormData> = async (values) => {
+        createUser.mutateAsync(values)
+        console.log(values)
 
         showSuccessToast()
         router.push('/users')
